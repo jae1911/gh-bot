@@ -188,6 +188,21 @@ def gh_webhook():
             send_message = True
         else:
             res_string = 'ok'
+    elif event_type == 'discussion':
+        # Discussion
+        ds_data = json_data.get('discussion')
+
+        ds_url = ds_data['html_url']
+        ds_number = ds_data['number']
+        ds_title = ds_data['title']
+        ds_opener = ds_data['user']['login']
+
+        ds_action = json_data.get('action')
+        if ds_action == 'created':
+            res_string += f'{ds_opener} opened a new discussion #{ds_number}: ["{ds_title}"]({ds_url})'
+            send_message = True
+        else:
+            res_string = 'ok'
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
