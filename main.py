@@ -44,7 +44,7 @@ def gh_webhook():
     repo = json_data.get('repository')
 
     repo_name = repo['name']
-    repo_url = repo['url']
+    repo_url = repo['html_url']
     repo_visibility = repo['private']
     if repo_visibility:
         repo_visibility = 'private'
