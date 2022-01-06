@@ -151,10 +151,25 @@ def gh_webhook():
             res_string = 'ok'
         else:
             star_sender = json_data.get('sender')
-            star_timestamp = json.get('starred_at')
+            star_timestamp = json_data.get('starred_at')
             star_giver = star_sender['login']
             res_string += f'{star_giver} starred {repo_name} on {star_timestamp}.'
             send_message = True
+    elif event_type == 'release':
+        # Release
+        rel_data = json_data.get('release')
+
+        rel_url = rel_data['html_url']
+        rel_name = rel_data['tag_name']
+        rel_maker = rel_data['author']['login']
+
+        rel_action = json_data.get('action')
+
+        if rel_action == 'published':
+            res_string += f'{rel_maker} created the [{rel_name}]({rel_url}) release.'
+            send_message = True
+        else:
+            res_string = 'ok'
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
