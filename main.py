@@ -203,6 +203,23 @@ def gh_webhook():
             send_message = True
         else:
             res_string = 'ok'
+    elif event_type == 'sponsorship':
+        # Sponsorship
+        sp_data = json_data.get('sponsorship')
+
+        sp_created = sp_data['created_at']
+
+        sp_sa_name = sp_data['sponsorable']['login']
+        sp_sp_name = sp_data['sponsored']['login']
+        sp_tier_name = sp_data['tier']['name']
+        sp_tier_price = sp_data['tier']['monthly_price_in_dollars']
+
+        sp_action = json_data.get('action')
+        if sp_action == 'created':
+            res_string += f'{sp_sa_name} has sponsored {sp_sp_name} with a {sp_tier_name} tier ({sp_tier_price})!'
+            send_message = True
+        else:
+            res_string = 'ok'
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
