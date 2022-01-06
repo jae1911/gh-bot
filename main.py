@@ -31,7 +31,7 @@ def gh_webhook():
     event_sig = request.headers.get('X-Hub-Signature-256')
 
     if not event_sig:
-        return '0', 404
+        return 'wrong auth', 401
 
     webhook_token = bytes(SEC_TOKEN, 'UTF-8')
     signature = hmac.new(webhook_token, request.data, hashlib.sha256)
