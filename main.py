@@ -255,7 +255,7 @@ def gh_webhook():
 
         if r.status_code != 200:
             log.error(f'Something bad happened: {r.text}')
-            return False
+            return "err", 510
 
         joined_rooms = json.loads(r.text)
         for room in joined_rooms.get('joined_rooms'):
@@ -263,8 +263,5 @@ def gh_webhook():
             r = requests.post(msg, data=json.dumps(payload))
             if r.status_code != 200:
                 log.error(f'Something bad happened: {r.text}')
-                return False
-        return True
-
 
     return res_string, 200
