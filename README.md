@@ -51,3 +51,7 @@ There, set these values:
 
 And then hit Add Webhook.  
 You are now good to go!
+
+## Support
+
+If you need any help, [join the Matrix room](https://matrix.to/#/#home:jae.fi).
