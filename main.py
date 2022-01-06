@@ -108,6 +108,20 @@ def gh_webhook():
         else:
             # We ignore other statuses as the bot is already spammy as it is
             res_string = 'OK'
+    elif event_type == 'issues':
+        # Issue
+        issue_data = json_data.get('issue')
+
+        issue_title = issue_data['title']
+        issue_opener = issue_data['user']['login']
+        issue_url = issue_data['url']
+        issue_number = issue_data['number']
+        issue_repo = issue_data['repository']['full_name']
+
+        issue_action = json_data.get('action')
+
+        res_string += f'Issue {repository}#{number} ("[{issue_title}]({issue_url})") was {issue_action} by {issue_opener}'
+        send_message = True
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
