@@ -117,9 +117,16 @@ def gh_webhook():
 
         r = requests.get(f'https://{MATRIX_HOMESERVER}/_matrix/client/v3/joined_rooms?access_token={MATRIX_TOKEN}')
 
+        if r.status_code != 200:
+            log.error(f'Something bad happened: {r.text}')
+            return "err", 500
+
         joined_rooms = json.loads(r.text)
         for room in joined_rooms.get('joined_rooms'):
             msg = f'https://{MATRIX_HOMESERVER}/_matrix/client/r0/rooms/{room}/send/m.room.message?access_token={MATRIX_TOKEN}'
             r = requests.post(msg, data=json.dumps(payload))
+            if r.status_code != 200:
+                log.error(f'Something bad happened: {r.text}')
+                return "err", 500
 
     return res_string, 200
