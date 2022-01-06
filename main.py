@@ -119,9 +119,14 @@ def gh_webhook():
         issue_repo = issue_data['repository']['full_name']
 
         issue_action = json_data.get('action')
-
-        res_string += f'Issue {repository}#{number} ("[{issue_title}]({issue_url})") was {issue_action} by {issue_opener}'
-        send_message = True
+        
+        ignore_actions = ['labeled', 'unlabeled', 'unpinned', 'pinned']
+        if issue_action in ignore_actions:
+            # We ignore that
+            log.warn(f'Ignoring issue event for {repository}#{number} because of {issue_action}')
+        else:
+            res_string += f'Issue {repository}#{number} ("[{issue_title}]({issue_url})") was {issue_action} by {issue_opener}'
+            send_message = True
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
