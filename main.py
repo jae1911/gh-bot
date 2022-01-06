@@ -122,6 +122,7 @@ def gh_webhook():
         ignore_actions = ['labeled', 'unlabeled', 'unpinned', 'pinned']
         if issue_action in ignore_actions:
             # We ignore that
+            res_string = 'ok'
             log.warn(f'Ignoring issue event for {repo_name}#{issue_number} because of {issue_action}')
         else:
             res_string += f'Issue #{issue_number} ("[{issue_title}]({issue_url})") was {issue_action} by {issue_opener}'
