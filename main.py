@@ -18,7 +18,7 @@ SEC_TOKEN = os.environ.get('SEC_TOKEN')
 @app.post('/gh/webhook')
 def gh_webhook():
     # Test if we got environment variables
-    if not SEC_TOKEN or not MATRIX_TOKEN or not MATRIX_HOMESERVER:
+    if not SEC_TOKEN:
         return 'err', 510
 
     # Get request JSON
