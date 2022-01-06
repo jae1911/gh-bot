@@ -90,9 +90,14 @@ def gh_webhook():
         workflow_status = workflow_run['status']
         workflow_name = workflow_run['name']
         workflow_conclusion = workflow_run['conclusion']
+        workflow_url = workflow_run['url']
+        workflow_attempts = workflow_run['run_attempt']
 
         if workflow_status == 'completed':
-            res_string += f'Workflow {workflow_name} completed with code {workflow_conclusion}.  '
+            if workflow_conclusion == 'failure':
+                res_string += f'Workflow {workflow_name} has failed!  [See the details to know why.]({workflow_url})  '
+            else:
+                res_string += f'Workflow {workflow_name} completed successfully with {workflow_attempts} attempts.  '
 
             send_message = True
         else:
