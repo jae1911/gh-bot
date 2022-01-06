@@ -39,7 +39,7 @@ def gh_webhook():
     full_sig = f'sha256={signature.hexdigest()}'
 
     if event_sig != full_sig:
-        return 'no', 404
+        return 'signature mismatch', 401
 
     res_string = ''
     send_message = False
