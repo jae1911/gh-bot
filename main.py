@@ -237,9 +237,6 @@ def gh_webhook():
         res_string = 'OK'
 
     if send_message:
-        ok = send_message(res_string)
-
-        if not ok:
-            log.warn('Something bad happened')
+        send_message(res_string)
 
     return res_string, 200
