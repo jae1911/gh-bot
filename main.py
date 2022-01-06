@@ -106,9 +106,10 @@ def gh_webhook():
 
             send_message = True
         else:
+            # We ignore other statuses as the bot is already spammy as it is
             res_string = 'OK'
-            send_message = False
     else:
+        # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
         res_string = 'OK'
 
