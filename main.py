@@ -47,6 +47,7 @@ def gh_webhook():
     # Get repository data
     repo = json_data.get('repository')
 
+    # Get basic repository infos
     repo_name = repo['name']
     repo_url = repo['html_url']
     repo_visibility = repo['private']
@@ -55,7 +56,7 @@ def gh_webhook():
     else:
         repo_visibility = 'public'
 
-    res_string += f'Repository [{repo_name}]({repo_url}) received a {event_type} event.  \n'
+    res_string += f'Repository [{repo_name}]({repo_url}) ({repo_visibility}) received a {event_type} event.  \n'
 
     # If event is 'push'
     if event_type == 'push':
