@@ -220,6 +220,19 @@ def gh_webhook():
             send_message = True
         else:
             res_string = 'ok'
+    elif event_type == 'package':
+        # Package
+        pkg_data = json_data.get('package')
+
+        pkg_name = pkg_data['namespace']
+        pkg_url = pkg_data['html_url']
+        pkg_eco = pkg_data['ecosystem']
+        pkg_tag = pkg_data['tag_name']
+
+        pkg_action = json_data.get('action')
+
+        res_string += f'[{pkg_name}:{pkg_tag}]({pkg_url}) ({pkg_eco}) got {pkg_action}'
+        send_message = True
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
