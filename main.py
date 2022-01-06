@@ -144,6 +144,17 @@ def gh_webhook():
         else:
             res_string += f'{pr_opener} {pr_action} PR [{pr_number} "{pr_title}"]({pr_url})'
             send_message = True
+    elif event_type == 'star':
+        # Star
+        star_action = json_data.get('action')
+        if star_action == 'deleted':
+            res_string = 'ok'
+        else:
+            star_sender = json.get('sender')
+            star_timestamp = json.get('starred_at')
+            star_giver = star_sender['login']
+            res_string += f'{star_giver} starred {repo_name} on {star_timestamp}.'
+            send_message = True
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
