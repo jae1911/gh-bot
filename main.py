@@ -150,7 +150,7 @@ def gh_webhook():
         if star_action == 'deleted':
             res_string = 'ok'
         else:
-            star_sender = json.get('sender')
+            star_sender = json_data.get('sender')
             star_timestamp = json.get('starred_at')
             star_giver = star_sender['login']
             res_string += f'{star_giver} starred {repo_name} on {star_timestamp}.'
