@@ -3,12 +3,15 @@ import os
 import requests
 import markdown
 
-# ENV variables
-MATRIX_TOKEN = os.environ.get('MATRIX_TOKEN')
-MATRIX_HOMESERVER = os.environ.get('MATRIX_HOMESERVER')
-
 def send_message(message=None):
     if message == None:
+        return False
+
+    # ENV variables
+    MATRIX_TOKEN = os.environ.get('MATRIX_TOKEN')
+    MATRIX_HOMESERVER = os.environ.get('MATRIX_HOMESERVER')
+
+    if not MATRIX_HOMESERVER or not MATRIX_TOKEN:
         return False
 
     payload = {
