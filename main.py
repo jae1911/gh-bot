@@ -114,7 +114,7 @@ def gh_webhook():
 
         issue_title = issue_data['title']
         issue_opener = issue_data['user']['login']
-        issue_url = issue_data['url']
+        issue_url = issue_data['html_url']
         issue_number = issue_data['number']
 
         issue_action = json_data.get('action')
