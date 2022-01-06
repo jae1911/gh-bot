@@ -228,7 +228,7 @@ def gh_webhook():
         pkg_name = pkg_data['namespace']
         pkg_url = pkg_data['html_url']
         pkg_eco = pkg_data['ecosystem']
-        pkg_tag = pkg_data['package_version']['version']
+        pkg_tag = pkg_data['package_version']['target_commitish']
 
         pkg_action = json_data.get('action')
 
