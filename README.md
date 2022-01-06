@@ -2,6 +2,12 @@
 
 gh-bot is maybe the worst (but simplest) Matrix webhook bot for Github.  
 
+Example of commits:
+![Screenshot of Element showing a list of commits sent by the bot.](data/example-commits.png)
+
+Example of workflow finished:
+![Screenshot of Element showing a workflow ended event.](data/example-workflow.png)
+
 ## Setting up
 
 ### Server
