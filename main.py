@@ -127,6 +127,23 @@ def gh_webhook():
         else:
             res_string += f'Issue #{issue_number} ("[{issue_title}]({issue_url})") was {issue_action} by {issue_opener}'
             send_message = True
+    elif event_type == 'pull_requests':
+        # Pull Request
+        pr_data = json_data.get('pull_request')
+
+        pr_url = pr_data['html_url']
+        pr_title = pr_data['title']
+        pr_opener = pr_data['user']['login']
+        pr_number = pr_data['number']
+
+        pr_action = json_data.get('action')
+        ignore_actions = ['auto_merge_disabled', 'auto_merge_enabled', 'synchronize', 'unlabeled', 'labeled']
+
+        if pr_action in ignore_actions:
+            res_string = 'ok'
+        else:
+            res_string += f'{pr_opener} {pr_action} PR [{pr_number} "{pr_title}"]({pr_url})'
+            send_message = True
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
