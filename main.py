@@ -12,12 +12,17 @@ app = Flask(__name__)
 
 log = logging.getLogger('app')
 
+# Get env variables
 SEC_TOKEN = os.environ.get('SEC_TOKEN')
 MATRIX_TOKEN = os.environ.get('MATRIX_TOKEN')
 MATRIX_HOMESERVER = os.environ.get('MATRIX_HOMESERVER')
 
 @app.post('/gh/webhook')
 def gh_webhook():
+    # Test if we got environment variables
+    if not SEC_TOKEN or not MATRIX_TOKEN or not MATRIX_HOMESERVER:
+        return 'err', 510
+
     # Get request JSON
     json_data = request.json
 
