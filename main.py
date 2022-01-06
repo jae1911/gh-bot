@@ -6,6 +6,9 @@ import os
 
 from flask import Flask, request
 
+import requests
+import markdown
+
 app = Flask(__name__)
 
 log = logging.getLogger('app')
