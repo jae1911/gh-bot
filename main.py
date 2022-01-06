@@ -79,7 +79,7 @@ def gh_webhook():
             commit_author = commit['author']['name']
             commit_message = commit['message']
 
-            res_string += f' - [[{commit_id}]({commit_url}) - {commit_author}] "{commit_message}"'
+            res_string += f' - [[{commit_id}]({commit_url}) - {commit_author}] "{commit_message}  "'
 
         # No error, no halt, send message
         send_message = True
