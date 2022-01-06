@@ -5,8 +5,8 @@ import hmac
 import os
 
 from flask import Flask, request
-import requests
-import markdown
+
+from message import send_message
 
 app = Flask(__name__)
 
@@ -14,8 +14,6 @@ log = logging.getLogger('app')
 
 # Get env variables
 SEC_TOKEN = os.environ.get('SEC_TOKEN')
-MATRIX_TOKEN = os.environ.get('MATRIX_TOKEN')
-MATRIX_HOMESERVER = os.environ.get('MATRIX_HOMESERVER')
 
 @app.post('/gh/webhook')
 def gh_webhook():
@@ -239,25 +237,9 @@ def gh_webhook():
         res_string = 'OK'
 
     if send_message:
-        payload = {
-            'msgtype': 'm.notice',
-            'body': res_string,
-            'format': 'org.matrix.custom.html',
-            'formatted_body': markdown.markdown(res_string)
-        }
+        ok = send_message(res_string)
 
-        r = requests.get(f'https://{MATRIX_HOMESERVER}/_matrix/client/v3/joined_rooms?access_token={MATRIX_TOKEN}')
-
-        if r.status_code != 200:
-            log.error(f'Something bad happened: {r.text}')
-            return "err", 500
-
-        joined_rooms = json.loads(r.text)
-        for room in joined_rooms.get('joined_rooms'):
-            msg = f'https://{MATRIX_HOMESERVER}/_matrix/client/r0/rooms/{room}/send/m.room.message?access_token={MATRIX_TOKEN}'
-            r = requests.post(msg, data=json.dumps(payload))
-            if r.status_code != 200:
-                log.error(f'Something bad happened: {r.text}')
-                return "err", 500
+        if not ok:
+            log.warn('Something bad happened')
 
     return res_string, 200
