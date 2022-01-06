@@ -170,6 +170,24 @@ def gh_webhook():
             send_message = True
         else:
             res_string = 'ok'
+    elif event_type == 'issue_comment':
+        # Issue comment
+        ic_data = json_data.get('comment')
+
+        ic_url = ic_data['html_url']
+        ic_commenter = ic_data['user']['login']
+        ic_text = ic_data['body']
+
+        ic_issue_title = json_data.get('issue')['title']
+        ic_issue_number = json_data.get('issue')['number']
+
+        ic_action = json_data.get('action')
+
+        if ic_action == 'created':
+            res_string += f'{ic_commenter} commented on issue [#{ic_issue_number}]({ic_url}) "{ic_issue_title}":  \n{ic_text}'
+            send_message = True
+        else:
+            res_string = 'ok'
     else:
         # If a certain event isn't implemented, we log it
         log.warn(f'{event_type} is not implemented')
