@@ -1,5 +1,4 @@
 import logging
-import asyncio
 import json
 import hashlib
 import hmac
