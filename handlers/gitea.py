@@ -5,7 +5,7 @@ import hashlib
 
 from flask import Flask, request, Blueprint
 
-from message import send_to_matrix
+from utils.message import send_to_matrix
 
 # Setup logging
 gitea_log = logging.getLogger('gitea')

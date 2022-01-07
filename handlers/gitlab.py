@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, request, Blueprint
 
-from message import send_to_matrix
+from utils.message import send_to_matrix
 
 # Setup logging
 gitlab_log = logging.getLogger('gitlab')

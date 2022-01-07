@@ -5,7 +5,7 @@ import os
 
 from flask import Flask, request, Blueprint
 
-from message import send_to_matrix
+from utils.message import send_to_matrix
 
 # Setup logging
 github_log = logging.getLogger('github')
