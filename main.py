@@ -11,6 +11,7 @@ from message import send_to_matrix
 app = Flask(__name__)
 
 log = logging.getLogger('app')
+gitlab_log = logging.getLogger('gitlab')
 
 # Get env variables
 SEC_TOKEN = os.environ.get('SEC_TOKEN')
@@ -245,4 +246,28 @@ def gh_webhook():
 # Gitlab
 @app.post('/gl/webhook')
 def gl_webhook():
-    pass
+    # Test env variable
+    if not SEC_TOKEN:
+        return 'err', 510
+
+    # Get data
+    json_data = request.json
+
+    # Get headers
+    event_sig = request.headers.get('X-Gitlab-Token')
+
+    if not json_data or not event_sig:
+        return 'err', 510
+
+    # Check token
+    if event_sig != SEC_TOKEN:
+        return 'err', 510
+
+    # Get event type
+    event_type = json_data.get('event_name')
+
+    # Handle events
+    if event_type == 'push':
+        pass
+    else:
+        gitlab_log.warn(f'{event_type} is not implemented')
