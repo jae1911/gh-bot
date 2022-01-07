@@ -250,7 +250,7 @@ def gl_webhook():
         return 'err', 510
 
     # Get event type
-    event_type = json_data.get('event_name')
+    event_type = json_data.get('object_kind')
 
     # Default strings
     send_message = False
