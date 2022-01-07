@@ -230,7 +230,7 @@ def gh_webhook():
     return res_string, 200
 
 # Gitlab
-@app.post('/gl/webhook')
+@app.post('/gh/gitlab')
 def gl_webhook():
     # Test env variable
     if not SEC_TOKEN:
