@@ -346,6 +346,22 @@ def gl_webhook():
 
         res_string += f'{user_name} {act} MR [{mr_id}!{project_name}]({mr_url}) {mr_source}->{mr_target}'
         send_message = True
+    elif event_type == 'pipeline':
+        # Pipeline status
+
+        # User data
+        pip_trigger = json_data.get('user')['name']
+
+        # Pipeline data
+        pi_data = json_data.get('object_attributes')
+
+        pi_status = pi_data['status']
+        pi_ref = pi_data['ref']
+        pi_duration = pi_data['duration']
+        pi_id = pi_data['id']
+
+        res_string += f'Pipeline [#{pi_id}]({project_url}/-/pipelines/{pi_id}) finished with code {pi_status} after a {pi_duration}s run on [{repo_name}/{pi_ref}]({repo_url})'
+        send_message = True
     else:
         gitlab_log.warn(f'{event_type} is not implemented')
 
