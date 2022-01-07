@@ -267,8 +267,33 @@ def gl_webhook():
     # Get event type
     event_type = json_data.get('event_name')
 
+    # Default strings
+    send_message = False
+    res_string = ''
+
     # Handle events
     if event_type == 'push':
-        pass
+        # Push
+        user_trigger = json_data.get('user_name')
+
+        # Project
+        project_data = json_data.get('project')
+        project_url = project_data['web_url']
+        project_name = project_data['name']
+
+        # Commits
+        included_commits = json_data.get('commits')
+
+        # Build string
+        res_string += f'Repository [{project_name}]({project_url}) got {len(included_commits)} new commits pushed by {user_trigger}:  '
+        for commit in included_commits:
+            res_string += f' - [{commit['id']} - {commit['author']['name']}] "{commit['message']}"  '
+
+        send_message = True
     else:
         gitlab_log.warn(f'{event_type} is not implemented')
+
+    if send_message:
+        send_to_matrix(res_string)
+
+    return 'ok', 200
