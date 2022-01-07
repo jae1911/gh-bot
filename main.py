@@ -170,7 +170,7 @@ def gh_webhook():
         ic_action = json_data.get('action')
 
         if ic_action == 'created':
-            res_string += f'{ic_commenter} commented on issue [{repo_name}#{ic_issue_number}]({ic_url}) "{ic_issue_title}":  \n{ic_text}'
+            res_string += f'{ic_commenter} commented on issue [{repo_name}#{ic_issue_number}]({ic_url}) "{ic_issue_title}":  \n> {ic_text}'
             send_message = True
         else:
             res_string = 'ok'
