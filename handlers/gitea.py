@@ -62,7 +62,7 @@ def gt_webhook():
         # Get commits
         commits_list = json_data.get('commits')
 
-        res_string += f'Repo [{full_name}]({repo_url}) received a push of {len(commits_list)} by {pusher_name}:  \n'
+        res_string += f'Repo [{repo_full_name}]({repo_url}) received a push of {len(commits_list)} by {pusher_name}:  \n'
 
         for commit in commits_list:
             commit_id = commit['id']
