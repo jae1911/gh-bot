@@ -331,7 +331,7 @@ def gl_webhook():
         mr_target = mr_data['target_branch']
 
         act = ''
-        if mr_action == 'open'
+        if mr_action == 'open':
             act = 'opened'
         elif mr_action == 'close':
             act = 'closed'
