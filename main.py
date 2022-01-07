@@ -301,6 +301,20 @@ def gl_webhook():
         elif is_action == 'close':
             res_string += f'{user_name} closed the issue [{project_name}#{is_number}]({is_url})'
             send_message = True
+    elif event_type == 'note':
+        # Comment
+
+        # User data
+        user_name = json_data.get('user')['name']
+
+        # Get comment data
+        cm_data = json_data.get('object_attributes')
+
+        cm_content = cm_data['note']
+        cm_type = cm_data['noteable_type']
+        cm_url = cm_data['url']
+
+        res_string += f'[{user_name} commented on {cm_type}]({cm_url}) - {project_name}  \n> {cm_content}'
     else:
         gitlab_log.warn(f'{event_type} is not implemented')
 
