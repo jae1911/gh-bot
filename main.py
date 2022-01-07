@@ -275,8 +275,9 @@ def gl_webhook():
             commit_id = commit['id']
             commit_author = commit['author']['name']
             commit_message = commit['message']
+            commit_url = commit['url']
 
-            res_string += f' - [{commit_id} - {commit_author}] "{commit_message}"  \n'
+            res_string += f' - [[{commit_id}]({commit_url}) - {commit_author}] "{commit_message}"  \n'
 
         send_message = True
     elif event_type == 'issue':
