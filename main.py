@@ -51,33 +51,14 @@ def gh_webhook():
     # Get basic repository infos
     repo_name = repo['name']
     repo_url = repo['html_url']
-    repo_visibility = repo['private']
-    if repo_visibility:
-        repo_visibility = 'private'
-    else:
-        repo_visibility = 'public'
-
-    res_string += f'Repository [{repo_name}]({repo_url}) ({repo_visibility}) received a {event_type} event.  \n'
 
     # If event is 'push'
     if event_type == 'push':
-        # Get head commit data
-        head_commit = json_data.get('head_commit')
-
-        head_id = head_commit['id']
-        head_timestamp = head_commit['timestamp']
-        head_author = head_commit['author']['name']
-        head_url = head_commit['url']
-        head_message = head_commit['message']
-
-        res_string += f'Head commit: [{head_id}]({head_url}) at {head_timestamp} by {head_author}: "{head_message}".  \n'
-
         # Get commits data
         commits_list = json_data.get('commits')
 
-        res_string += f'List of commits included:  \n'
+        res_string += f'Repo [{repo_name}]({repo_url}) received a push containing {len(commits_list)} commits:  '
 
-        commit_dict = {}
         # Process all commits included
         for commit in commits_list:
             commit_id = commit['id']
@@ -90,6 +71,8 @@ def gh_webhook():
         # No error, no halt, send message
         send_message = True
     elif event_type == 'workflow_run':
+        res_string += f'[{repo_name}] '
+
         # Workflow
         workflow_run = json_data.get('workflow_run')
 
@@ -126,7 +109,7 @@ def gh_webhook():
             res_string = 'ok'
             github_log.warn(f'Ignoring issue event for {repo_name}#{issue_number} because of {issue_action}')
         else:
-            res_string += f'Issue #{issue_number} ("[{issue_title}]({issue_url})") was {issue_action} by {issue_opener}'
+            res_string += f'[{repo_name}] Issue #{issue_number} ("[{issue_title}]({issue_url})") was {issue_action} by {issue_opener}'
             send_message = True
     elif event_type == 'pull_requests':
         # Pull Request
@@ -157,6 +140,8 @@ def gh_webhook():
             res_string += f'{star_giver} starred {repo_name} on {star_timestamp}.'
             send_message = True
     elif event_type == 'release':
+        res_string += f'[{repo_name}] '
+
         # Release
         rel_data = json_data.get('release')
 
@@ -185,7 +170,7 @@ def gh_webhook():
         ic_action = json_data.get('action')
 
         if ic_action == 'created':
-            res_string += f'{ic_commenter} commented on issue [#{ic_issue_number}]({ic_url}) "{ic_issue_title}":  \n{ic_text}'
+            res_string += f'{ic_commenter} commented on issue [{repo_name}#{ic_issue_number}]({ic_url}) "{ic_issue_title}":  \n{ic_text}'
             send_message = True
         else:
             res_string = 'ok'
@@ -200,7 +185,7 @@ def gh_webhook():
 
         ds_action = json_data.get('action')
         if ds_action == 'created':
-            res_string += f'{ds_opener} opened a new discussion #{ds_number}: ["{ds_title}"]({ds_url})'
+            res_string += f'{ds_opener} opened a new discussion {repo_name}#{ds_number}: ["{ds_title}"]({ds_url})'
             send_message = True
         else:
             res_string = 'ok'
