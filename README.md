@@ -62,6 +62,17 @@ Go to your repo settings, Webhooks and fill with this data:
 
 And then click on 'Add Webhook' and there you go!
 
+### Gitea
+
+Go to your repo settings, Webhooks, Add Webhook, Gitea:
+
+ - Target URL: your endpoint `https://example.com/gh/gitea`
+ - POST Content Type: `application/json`
+ - Secret: your secret, for instance `72f38e4c61b28f1c9a17868750f48330e47abd12dummy`
+ - Trigger on: all events
+
+Then click 'Add Webhook'.
+
 ## Support
 
 If you need any help, [join the Matrix room](https://matrix.to/#/#home:jae.fi).
