@@ -15,6 +15,7 @@ log = logging.getLogger('app')
 # Get env variables
 SEC_TOKEN = os.environ.get('SEC_TOKEN')
 
+# Github
 @app.post('/gh/webhook')
 def gh_webhook():
     # Test if we got environment variables
@@ -240,3 +241,8 @@ def gh_webhook():
         send_to_matrix(res_string)
 
     return res_string, 200
+
+# Gitlab
+@app.post('/gl/webhook')
+def gl_webhook():
+    pass
