@@ -256,15 +256,15 @@ def gl_webhook():
     send_message = False
     res_string = ''
 
+    # Project
+    project_data = json_data.get('project')
+    project_url = project_data['web_url']
+    project_name = project_data['name']
+
     # Handle events
     if event_type == 'push':
         # Push
         user_trigger = json_data.get('user_name')
-
-        # Project
-        project_data = json_data.get('project')
-        project_url = project_data['web_url']
-        project_name = project_data['name']
 
         # Commits
         included_commits = json_data.get('commits')
@@ -279,6 +279,27 @@ def gl_webhook():
             res_string += f' - [{commit_id} - {commit_author}] "{commit_message}"  '
 
         send_message = True
+    elif event_type == 'issue':
+        # Issue
+
+        # User data
+        user_name = json_data.get('user')['name']
+
+        # Issue data
+        is_data = json_data.get('object_attributes')
+
+        is_title = is_data['title']
+        is_description = is_data['description']
+        is_url = is_data['url']
+        is_action = is_data['action']
+        is_number = is_data['id']
+
+        if is_action == 'open':
+            res_string += f'{user_name} opened the issue [{project_name}#{is_number}]({is_url}): "{is_title}":  \n> {is_description}'
+            send_message = True
+        elif is_action == 'close':
+            res_string += f'{user_name} closed the issue [{project_name}#{is_number}]({is_url})'
+            send_message = True
     else:
         gitlab_log.warn(f'{event_type} is not implemented')
 
