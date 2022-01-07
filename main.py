@@ -272,7 +272,11 @@ def gl_webhook():
         # Build string
         res_string += f'Repository [{project_name}]({project_url}) got {len(included_commits)} new commits pushed by {user_trigger}:  '
         for commit in included_commits:
-            res_string += f' - [{commit['id']} - {commit['author']['name']}] "{commit['message']}"  '
+            commit_id = commit['id']
+            commit_author = commit['author']['name']
+            commit_message = commit['message']
+
+            res_string += f' - [{commit_id} - {commit_author}] "{commit_message}"  '
 
         send_message = True
     else:
