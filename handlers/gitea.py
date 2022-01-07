@@ -45,8 +45,36 @@ def gt_webhook():
     res_string = ''
     send_message = False
 
+    # Get basic repo data
+    repo_data = json_data.get('repository')
+
+    repo_name = repo_data['name']
+    repo_full_name = repo_data['full_name']
+    repo_url = repo_data['html_url']
+
+    # Get basic pusher data
+    pusher_data = json_data.get('pusher')
+
+    pusher_name = pusher_data['full_name']
+
     # Events handling
-    gitea_log.warn(f'Event {event_type} not implemented')
+    if event_type == 'push':
+        # Get commits
+        commits_list = json_data.get('commits')
+
+        res_string += f'Repo [{full_name}]({repo_url}) received a push of {len(commits_list)} by {pusher_name}:  \n'
+
+        for commit in commits_list:
+            commit_id = commit['id']
+            commit_message = commit['message']
+            commit_url = commit['url']
+            commit_author = commit['author']['name']
+
+            res_string += f'[[{commit_id}]({commit_url}) - {commit_author}] "{commit_message}"  \n'
+
+        send_message = True
+    else:
+        gitea_log.warn(f'Event {event_type} not implemented')
 
     if send_message:
         send_to_matrix(res_string)
