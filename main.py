@@ -57,7 +57,7 @@ def gh_webhook():
         # Get commits data
         commits_list = json_data.get('commits')
 
-        res_string += f'Repo [{repo_name}]({repo_url}) received a push containing {len(commits_list)} commits:  '
+        res_string += f'Repo [{repo_name}]({repo_url}) received a push containing {len(commits_list)} commits:  \n'
 
         # Process all commits included
         for commit in commits_list:
@@ -270,7 +270,7 @@ def gl_webhook():
         included_commits = json_data.get('commits')
 
         # Build string
-        res_string += f'Repository [{project_name}]({project_url}) got {len(included_commits)} new commits pushed by {user_trigger}:  '
+        res_string += f'Repository [{project_name}]({project_url}) got {len(included_commits)} new commits pushed by {user_trigger}:  \n'
         for commit in included_commits:
             commit_id = commit['id']
             commit_author = commit['author']['name']
