@@ -35,9 +35,7 @@ services:
     - 5000:5000
 ```
 
-Now login and join rooms you want your bot to send the status messages in.
-
-**Warning: the bot will send statuses in every it is in with no exceptions!**
+Now, you can invite the bot and it will auto-join room it is invited in every 15 seconds.
 
 ### Github
 
