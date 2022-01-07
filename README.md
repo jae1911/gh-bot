@@ -52,6 +52,16 @@ There, set these values:
 And then hit Add Webhook.  
 You are now good to go!
 
+### Gitlab
+
+Go to your repo settings, Webhooks and fill with this data:
+ 
+ - URL: your exposed URL, for instance: `https://example.com/gh/gitlab`
+ - Secret token: your generated secret, for instance `72f38e4c61b28f1c9a17868750f48330e47abd12dummy`
+ - Trigger: select events you want to receive
+
+And then click on 'Add Webhook' and there you go!
+
 ## Support
 
 If you need any help, [join the Matrix room](https://matrix.to/#/#home:jae.fi).
