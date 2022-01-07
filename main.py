@@ -315,6 +315,37 @@ def gl_webhook():
         cm_url = cm_data['url']
 
         res_string += f'[{user_name} commented on {cm_type}]({cm_url}) - {project_name}  \n> {cm_content}'
+    elif event_type == 'merge_request':
+        # Merge request
+
+        # User data
+        user_name = json_data.get('user')['name']
+
+        # MR data
+        mr_data = json_data.get('object_attributes')
+
+        mr_action = mr_data['action']
+        mr_id = mr_data['id']
+        mr_url = mr_data['url']
+        mr_source = mr_data['source_branch']
+        mr_target = mr_data['target_branch']
+
+        act = ''
+        if mr_action == 'open'
+            act = 'opened'
+        elif mr_action == 'close':
+            act = 'closed'
+        elif mr_action == 'reopen':
+            act = 'reopened'
+        elif mr_action == 'update':
+            act = 'updated'
+        elif mr_action == 'approved' or mr_action == 'unapproved':
+            act = mr_action
+        elif mr_action == 'merge':
+            act = merged
+
+        res_string += f'{user_name} {act} MR [{mr_id}!{project_name}]({mr_url}) {mr_source}->{mr_target}'
+        send_message = True
     else:
         gitlab_log.warn(f'{event_type} is not implemented')
 
