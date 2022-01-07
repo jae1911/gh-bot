@@ -10,7 +10,8 @@ from message import send_to_matrix
 
 app = Flask(__name__)
 
-log = logging.getLogger('app')
+# Setup logging
+github_log = logging.getLogger('github')
 gitlab_log = logging.getLogger('gitlab')
 
 # Get env variables
@@ -123,7 +124,7 @@ def gh_webhook():
         if issue_action in ignore_actions:
             # We ignore that
             res_string = 'ok'
-            log.warn(f'Ignoring issue event for {repo_name}#{issue_number} because of {issue_action}')
+            github_log.warn(f'Ignoring issue event for {repo_name}#{issue_number} because of {issue_action}')
         else:
             res_string += f'Issue #{issue_number} ("[{issue_title}]({issue_url})") was {issue_action} by {issue_opener}'
             send_message = True
@@ -235,7 +236,7 @@ def gh_webhook():
         send_message = True
     else:
         # If a certain event isn't implemented, we log it
-        log.warn(f'{event_type} is not implemented')
+        github_log.warn(f'{event_type} is not implemented')
         res_string = 'OK'
 
     if send_message:
