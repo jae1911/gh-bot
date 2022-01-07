@@ -1,5 +1,4 @@
 import logging
-import json
 import hashlib
 import hmac
 import os
