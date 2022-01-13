@@ -30,7 +30,7 @@ scheduler.start()
 # Add scheduler to auto-join Matrix rooms
 @scheduler.task('interval', id='join_rooms', seconds=15)
 def join_rooms():
-    logger.warn('Running the join_rooms task.')
+    logger.info('Running the join_rooms task.')
     check_matrix_rooms_for_joins()
 
 # Endpoints
@@ -40,4 +40,4 @@ app.register_blueprint(gitea_api)
 
 if __name__ == '__main__':
     app.run()
-    app.warn('Starting app')
+    logger.warn('Starting app')
