@@ -33,6 +33,8 @@ def gl_webhook():
     if event_sig != SEC_TOKEN:
         return 'err', 510
 
+    log_event_to_rooms(event=json_data, webhooktype='gitlab')
+
     # Get event type
     event_type = json_data.get('object_kind')
 
