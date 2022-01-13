@@ -42,6 +42,8 @@ def gt_webhook():
     if event_sig != full_sig:
         return 'signature mismatch', 401
 
+    log_event_to_rooms(event=json_data, webhooktype='gitea')
+
     res_string = ''
     send_message = False
 
