@@ -1,4 +1,5 @@
 import logging
+import os
 
 from flask_apscheduler import APScheduler
 from flask import Flask
@@ -10,8 +11,12 @@ class Config:
 # Setup logging
 logger = logging.getLogger('main')
 
+# Get OS environ
+CRT_SH_ENABLE = os.environ.get('CRT_SH_ENABLE')
+
 # Scheduler
 from utils.roomutil import check_matrix_rooms_for_joins
+from utils.crtsh import check_new_certificates
 
 # Endpoints
 from handlers.gitlab import gitlab_api
@@ -32,6 +37,13 @@ scheduler.start()
 def join_rooms():
     logger.warn('Running the join_rooms task.')
     check_matrix_rooms_for_joins()
+
+# Add scheduler CRTsh if enabled
+if CRT_SH_ENABLE:
+    @scheduler.task('interval', id='crt_sh', seconds=15)
+    def join_rooms():
+        logger.warn('Running the certificate task.')
+        check_new_certificates()
 
 # Endpoints
 app.register_blueprint(gitlab_api)
