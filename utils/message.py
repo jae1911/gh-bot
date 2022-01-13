@@ -7,6 +7,7 @@ import markdown
 # Get ENV variables
 MATRIX_TOKEN = os.environ.get('MATRIX_TOKEN')
 MATRIX_HOMESERVER = os.environ.get('MATRIX_HOMESERVER')
+LOG_ALL_EVENTS = os.environ.get('LOG_ALL_EVENTS')
 
 # Method to log events to rooms
 def log_event_to_rooms(event=None, webhooktype='generic'):
@@ -22,6 +23,9 @@ def log_event_to_rooms(event=None, webhooktype='generic'):
 
     if r.status_code != 200:
         log.error(f'Something bad happened: {r.text}')
+        return
+
+    if not LOG_ALL_EVENTS:
         return
 
     joined_rooms = json.loads(r.text)
