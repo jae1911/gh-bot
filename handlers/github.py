@@ -6,6 +6,7 @@ import os
 from flask import Flask, request, Blueprint
 
 from utils.message import send_to_matrix
+from utils.message import log_event_to_rooms
 
 # Setup logging
 github_log = logging.getLogger('github')
@@ -43,6 +44,8 @@ def gh_webhook():
 
     res_string = ''
     send_message = False
+
+    log_event_to_rooms(event=json_data, webhooktype='github')
 
     # Get repository data
     repo = json_data.get('repository')
