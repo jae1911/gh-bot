@@ -35,6 +35,8 @@ services:
     - 5000:5000
 ```
 
+You can also add ` - LOG_ALL_EVENTS=true` to the environment variables to log every event sent to webhooks to all rooms via a `fi.jae.webhooklog` event.
+
 Now, you can invite the bot and it will auto-join room it is invited in every 15 seconds.
 
 ### Github
