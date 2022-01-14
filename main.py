@@ -28,7 +28,7 @@ scheduler.init_app(app)
 scheduler.start()
 
 # Add scheduler to auto-join Matrix rooms
-@scheduler.task('interval', id='join_rooms', seconds=15)
+@scheduler.task('interval', id='join_rooms', seconds=5)
 def join_rooms():
     logger.info('Running the join_rooms task.')
     check_matrix_rooms_for_joins()
