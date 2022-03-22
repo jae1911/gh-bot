@@ -28,4 +28,4 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/jaedotmoe/gh-bot:latest
+          tags: ghcr.io/jae1911/gh-bot:latest
