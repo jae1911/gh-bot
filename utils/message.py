@@ -8,6 +8,7 @@ import markdown
 MATRIX_TOKEN = os.environ.get('MATRIX_TOKEN')
 MATRIX_HOMESERVER = os.environ.get('MATRIX_HOMESERVER')
 LOG_ALL_EVENTS = os.environ.get('LOG_ALL_EVENTS')
+MATRIX_PROTO = os.environ.get('MATRIX_SERVER_PROTO') or "https"
 
 # Method to log events to rooms
 def log_event_to_rooms(event=None, webhooktype='generic'):
@@ -19,7 +20,7 @@ def log_event_to_rooms(event=None, webhooktype='generic'):
         'body': event,
     }
 
-    r = requests.get(f'https://{MATRIX_HOMESERVER}/_matrix/client/v3/joined_rooms?access_token={MATRIX_TOKEN}')
+    r = requests.get(f'{MATRIX_PROTO}://{MATRIX_HOMESERVER}/_matrix/client/v3/joined_rooms?access_token={MATRIX_TOKEN}')
 
     if r.status_code != 200:
         log.error(f'Something bad happened: {r.text}')
@@ -30,7 +31,7 @@ def log_event_to_rooms(event=None, webhooktype='generic'):
 
     joined_rooms = json.loads(r.text)
     for room in joined_rooms.get('joined_rooms'):
-        msg = f'https://{MATRIX_HOMESERVER}/_matrix/client/r0/rooms/{room}/send/fi.jae.webhooklog?access_token={MATRIX_TOKEN}'
+        msg = f'{MATRIX_PROTO}://{MATRIX_HOMESERVER}/_matrix/client/r0/rooms/{room}/send/fi.jae.webhooklog?access_token={MATRIX_TOKEN}'
         r = requests.post(msg, data=json.dumps(payload))
         if r.status_code != 200:
             log.error(f'Something bad happened: {r.text}')
@@ -47,7 +48,7 @@ def send_to_matrix(message=None):
         'formatted_body': markdown.markdown(message)
     }
 
-    r = requests.get(f'https://{MATRIX_HOMESERVER}/_matrix/client/v3/joined_rooms?access_token={MATRIX_TOKEN}')
+    r = requests.get(f'{MATRIX_PROTO}://{MATRIX_HOMESERVER}/_matrix/client/v3/joined_rooms?access_token={MATRIX_TOKEN}')
 
     if r.status_code != 200:
         log.error(f'Something bad happened: {r.text}')
@@ -55,7 +56,7 @@ def send_to_matrix(message=None):
 
     joined_rooms = json.loads(r.text)
     for room in joined_rooms.get('joined_rooms'):
-        msg = f'https://{MATRIX_HOMESERVER}/_matrix/client/r0/rooms/{room}/send/m.room.message?access_token={MATRIX_TOKEN}'
+        msg = f'{MATRIX_PROTO}://{MATRIX_HOMESERVER}/_matrix/client/r0/rooms/{room}/send/m.room.message?access_token={MATRIX_TOKEN}'
         r = requests.post(msg, data=json.dumps(payload))
         if r.status_code != 200:
             log.error(f'Something bad happened: {r.text}')

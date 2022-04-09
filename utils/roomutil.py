@@ -10,6 +10,7 @@ room_log = logging.getLogger('roomutil')
 # Env variables
 MATRIX_TOKEN = os.environ.get('MATRIX_TOKEN')
 MATRIX_HOMESERVER = os.environ.get('MATRIX_HOMESERVER')
+MATRIX_PROTO = os.environ.get('MATRIX_SERVER_PROTO') or "https"
 
 # Check rooms for joins
 def check_matrix_rooms_for_joins():
@@ -18,7 +19,7 @@ def check_matrix_rooms_for_joins():
         room_log.fatal('NO HOMESERVER ADDRESS NOR TOKEN, CANNOT PROCEED')
         return
 
-    r = requests.get(f'https://{MATRIX_HOMESERVER}/_matrix/client/v3/sync?access_token={MATRIX_TOKEN}')
+    r = requests.get(f'{MATRIX_PROTO}://{MATRIX_HOMESERVER}/_matrix/client/v3/sync?access_token={MATRIX_TOKEN}')
     if r.status_code == 200:
         json_data = json.loads(r.text)
         rooms = json_data.get('rooms')
@@ -28,4 +29,4 @@ def check_matrix_rooms_for_joins():
         else:
             for room in rooms['invite']:
                 room_log.info(f'Joining room {room}')
-                r = requests.post(f'https://{MATRIX_HOMESERVER}/_matrix/client/v3/join/{room}?access_token={MATRIX_TOKEN}')
+                r = requests.post(f'{MATRIX_PROTO}://{MATRIX_HOMESERVER}/_matrix/client/v3/join/{room}?access_token={MATRIX_TOKEN}')
